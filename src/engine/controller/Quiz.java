@@ -1,10 +1,16 @@
 package engine.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Quiz {
 
+    private int id;
     private String title;
     private String text;
     private String[] options;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private int answer;
 
     public Quiz() {
     }
@@ -13,6 +19,14 @@ public class Quiz {
         this.title = title;
         this.text = text;
         this.options = options;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -38,32 +52,12 @@ public class Quiz {
     public void setOptions(String[] options) {
         this.options = options;
     }
-    public class QuizResult {
-        private boolean success;
-        private String feedback;
 
-        public QuizResult() {
-        }
+    public int getAnswer() {
+        return answer;
+    }
 
-        public QuizResult(boolean success, String feedback) {
-            this.success = success;
-            this.feedback = feedback;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-
-        public void setSuccess(boolean success) {
-            this.success = success;
-        }
-
-        public String getFeedback() {
-            return feedback;
-        }
-
-        public void setFeedback(String feedback) {
-            this.feedback = feedback;
-        }
+    public void setAnswer(int answer) {
+        this.answer = answer;
     }
 }
