@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class QuizDAO implements DAO {
+public class QuizDAO implements DAO<Quiz> {
 
     private List<Quiz> quizList;
     private AtomicInteger id;
@@ -27,9 +27,9 @@ public class QuizDAO implements DAO {
 
     @Override
     public Quiz get(int id) {
-        try {
+        if (quizList.size() > id - 1) {
             return quizList.get(id - 1);
-        } catch (IndexOutOfBoundsException e) {
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
         }
     }
@@ -38,6 +38,7 @@ public class QuizDAO implements DAO {
     public List<Quiz> getAll() {
         return quizList;
     }
+
 
     @Override
     public Quiz save(Quiz quiz) {
