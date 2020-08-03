@@ -1,7 +1,7 @@
 package engine.controller;
 
-public class QuizResult {
 
+public class QuizResult {
     private boolean success;
     private String feedback;
 
