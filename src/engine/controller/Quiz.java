@@ -1,18 +1,25 @@
 package engine.controller;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonPropertyOrder({"id", "title", "text", "options"})
+@Entity
 public class Quiz {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Id
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
     private int id;
 
     @NotBlank
@@ -22,14 +29,15 @@ public class Quiz {
     private String text;
 
     @NotNull
-    @NotEmpty
     @Size(min = 2)
     private String[] options;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int[] answer;
 
-    private Quiz() {
+
+    //Constructor only for the JPA
+    protected Quiz() {
     }
 
     @JsonCreator
@@ -45,6 +53,7 @@ public class Quiz {
         return quiz;
     }
 
+    @Id
     public int getId() {
         return id;
     }
@@ -85,3 +94,4 @@ public class Quiz {
         this.answer = answer;
     }
 }
+

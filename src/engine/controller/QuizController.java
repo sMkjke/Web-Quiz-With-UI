@@ -11,43 +11,51 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Validated
 @RestController
-@RequestMapping("/api/quizzes")
+@RequestMapping(value = "/api/quizzes", produces = "application/json")
 public class QuizController {
 
     @Autowired
-    QuizDAO service;
+    private JPAQuizDAO jpaQuizDAO;
 
 
     @GetMapping()
     public List<Quiz> getQuiz() {
-        return service.getAll();
+        return jpaQuizDAO.getAll();
     }
 
     @GetMapping("/{id}")
     public Quiz getQuiz(@PathVariable @Min(1) int id) {
-        try {
-            return service.get(id);
-        } catch (IndexOutOfBoundsException ignored) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Required quiz not available");
-        }
+//        try {
+//            return jpaQuizDAO.get(id);
+//        } catch (IndexOutOfBoundsException ignored) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Required quiz not available");
+//        }
+        return jpaQuizDAO.get(id);
     }
 
     @PostMapping
+    @ResponseBody
     public Quiz addQuiz(@RequestBody @Valid @NotNull Quiz quiz) {
-        return service.save(quiz);
+        return jpaQuizDAO.save(quiz);
     }
 
     @PostMapping("/{id}/solve")
     public QuizResult submitQuiz(@PathVariable @Min(1) int id,
                                  @RequestBody @NotNull QuizAnswer answer) {
-        return service.evaluateQuiz(id, answer);
+        return jpaQuizDAO.evaluateQuiz(id, answer);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleConstraintViolationException() {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleNotFoundException() {
     }
 }
