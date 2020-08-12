@@ -1,26 +1,18 @@
 package engine.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public class QuizAnswer{
 
-    int []answer;
+    List<Integer> answer;
 
     private QuizAnswer() {}
 
-    @JsonCreator
-    public static QuizAnswer getInstance(@JsonProperty("answer") int[] answer) {
-        QuizAnswer quizAnswer = new QuizAnswer();
-        quizAnswer.answer = answer != null ? answer : new int[0];
-        return quizAnswer;
-    }
-
-    public int[] getAnswer() {
+    public List<Integer> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int[] answer) {
+    public void setAnswer(List<Integer> answer) {
         this.answer = answer;
     }
 }

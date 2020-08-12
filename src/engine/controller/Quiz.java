@@ -1,27 +1,16 @@
 package engine.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@JsonPropertyOrder({"id", "title", "text", "options"})
 @Entity
 public class Quiz {
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE)
-    private int id;
-
     @NotBlank
     private String title;
 
@@ -30,36 +19,25 @@ public class Quiz {
 
     @NotNull
     @Size(min = 2)
-    private String[] options;
+    @ElementCollection
+    private List<String> options;
 
+    @ElementCollection
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int[] answer;
+    private List<Integer> answer;
 
 
-    //Constructor only for the JPA
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
+
     protected Quiz() {
     }
 
-    @JsonCreator
-    public static Quiz getInstance(@JsonProperty("title") String title,
-                                   @JsonProperty("text") String text,
-                                   @JsonProperty("options") String[] options,
-                                   @JsonProperty("answer") int[] answer) {
-        Quiz quiz = new Quiz();
-        quiz.title = title;
-        quiz.text = text;
-        quiz.options = options;
-        quiz.answer = answer != null ? answer : new int[0];
-        return quiz;
-    }
-
-    @Id
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public boolean isCorrect(List<Integer> options) {
+        return options.stream().sorted().collect(Collectors.toList()).equals(answer);
     }
 
     public String getTitle() {
@@ -78,20 +56,38 @@ public class Quiz {
         this.text = text;
     }
 
-    public String[] getOptions() {
+    public List<String> getOptions() {
         return options;
     }
 
-    public void setOptions(String[] options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
 
-    public int[] getAnswer() {
+    public List<Integer> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int[] answer) {
+    public void setAnswer(List<Integer> answer) {
         this.answer = answer;
     }
-}
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", options=" + options +
+                ", answer=" + answer +
+                ", id=" + id +
+                '}';
+    }
+}

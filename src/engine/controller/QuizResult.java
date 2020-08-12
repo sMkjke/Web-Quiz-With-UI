@@ -2,11 +2,12 @@ package engine.controller;
 
 
 public class QuizResult {
+
+    public final static QuizResult CORRECT_ANSWER = new QuizResult(true, "Congratulations, you're right!");
+    public final static QuizResult WRONG_ANSWER = new QuizResult(false, "Wrong answer! Please, try again.");
+
     private boolean success;
     private String feedback;
-
-    public QuizResult() {
-    }
 
     public QuizResult(boolean success, String feedback) {
         this.success = success;
