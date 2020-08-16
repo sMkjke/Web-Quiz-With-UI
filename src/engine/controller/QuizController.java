@@ -1,40 +1,42 @@
 package engine.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class QuizController {
 
-    Quiz quiz;
-    QuizResult result;
+    @Autowired
+    private IRepository quizRepository;
 
-    public QuizController() {
-        quiz = new Quiz();
-        result = new QuizResult();
-        quiz.setTitle("The Java Logo");
-        quiz.setText("What is depicted on the Java logo?");
-        quiz.setOptions(new String[]{"Robot", "Tea leaf", "Cup of coffee", "Bug"});
+    @GetMapping(path = "/api/quizzes/{id}")
+    public Quiz getQuestion(@PathVariable int id) {
+        return quizRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/api/quiz")
-    public Quiz getQuiz() {
-        return quiz;
+    @GetMapping(path = "/api/quizzes")
+    public List<Quiz> getAllQuestions() {
+        return quizRepository.findAll();
     }
 
-    @PostMapping("/api/quiz")
-    public QuizResult evaluateQuiz(@RequestBody String answer) {
-        if (answer.equals("answer=2")) {
-            result.setSuccess(true);
-            result.setFeedback("Congratulations, you're right!");
-            return result;
+    @PostMapping(path = "/api/quizzes/{id}/solve")
+    public QuizResult checkAnswer(@RequestBody QuizAnswer guess, @PathVariable int id) {
+        Quiz question = quizRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (question.isCorrect(guess.getAnswer())) {
+            return QuizResult.CORRECT_ANSWER;
         } else {
-            result.setSuccess(false);
-            result.setFeedback("Wrong answer! Please, try again.");
-            return result;
+            return QuizResult.WRONG_ANSWER;
         }
     }
-}
 
+    @PostMapping(path = "/api/quizzes")
+    public Quiz addQuestion(@RequestBody @Valid Quiz quiz) {
+        return quizRepository.save(quiz);
+    }
+}

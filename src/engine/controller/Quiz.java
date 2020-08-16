@@ -1,18 +1,43 @@
 package engine.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Entity
 public class Quiz {
-
+    @NotBlank
     private String title;
-    private String text;
-    private String[] options;
 
-    public Quiz() {
+    @NotBlank
+    private String text;
+
+    @NotNull
+    @Size(min = 2)
+    @ElementCollection
+    private List<String> options;
+
+    @ElementCollection
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Integer> answer;
+
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
+
+    protected Quiz() {
     }
 
-    public Quiz(String title, String text, String[] options ) {
-        this.title = title;
-        this.text = text;
-        this.options = options;
+    public boolean isCorrect(List<Integer> options) {
+        return options.stream().sorted().collect(Collectors.toList()).equals(answer);
     }
 
     public String getTitle() {
@@ -31,39 +56,38 @@ public class Quiz {
         this.text = text;
     }
 
-    public String[] getOptions() {
+    public List<String> getOptions() {
         return options;
     }
 
-    public void setOptions(String[] options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
-    public class QuizResult {
-        private boolean success;
-        private String feedback;
 
-        public QuizResult() {
-        }
+    public List<Integer> getAnswer() {
+        return answer;
+    }
 
-        public QuizResult(boolean success, String feedback) {
-            this.success = success;
-            this.feedback = feedback;
-        }
+    public void setAnswer(List<Integer> answer) {
+        this.answer = answer;
+    }
 
-        public boolean isSuccess() {
-            return success;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public void setSuccess(boolean success) {
-            this.success = success;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public String getFeedback() {
-            return feedback;
-        }
-
-        public void setFeedback(String feedback) {
-            this.feedback = feedback;
-        }
+    @Override
+    public String toString() {
+        return "Question{" +
+                "title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", options=" + options +
+                ", answer=" + answer +
+                ", id=" + id +
+                '}';
     }
 }
