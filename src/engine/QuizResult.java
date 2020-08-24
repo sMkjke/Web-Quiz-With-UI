@@ -1,4 +1,4 @@
-package engine.controller;
+package engine;
 
 
 public class QuizResult {

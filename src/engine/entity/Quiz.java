@@ -1,5 +1,6 @@
-package engine.controller;
+package engine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ public class Quiz {
 
     @NotBlank
     private String text;
+
+    @JsonIgnore
+    private String author;
 
     @NotNull
     @Size(min = 2)
@@ -78,6 +82,14 @@ public class Quiz {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     @Override
