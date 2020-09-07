@@ -1,6 +1,8 @@
 package engine.repository;
 
 import engine.entity.Quiz;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +14,7 @@ public interface QuizRepository extends CrudRepository<Quiz, Integer> {
 
     Optional<Quiz> findById(Integer id);
 
-    List<Quiz> findAll();
+    Page<Quiz> findAll(Pageable pageable);
 
     <T extends Quiz> T save(T question);
 }
