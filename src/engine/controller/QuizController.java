@@ -19,16 +19,20 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
+
+// TODO: 10.09.2020 Сделать авторизацию UI 
+// TODO: 10.09.2020 Сделать UI квизов 
+// TODO: 10.09.2020 Сделать main страничку приветствия 
 
 @RestController
 public class QuizController {
 
+//    private static final Logger logger = Logger.getLogger(QuizController.class);
     @Autowired
     private QuizRepository quizRepository;
-
     @Autowired
     private AccomplishmentRepository accomplishmentRepository;
+
 
     @GetMapping(path = "/api/quizzes/{id}")
     public Quiz getQuestion(@PathVariable int id) {
