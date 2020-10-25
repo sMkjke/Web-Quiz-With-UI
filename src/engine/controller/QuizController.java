@@ -27,11 +27,29 @@ import java.time.LocalDateTime;
 @RestController
 public class QuizController {
 
-//    private static final Logger logger = Logger.getLogger(QuizController.class);
+    //    private static final Logger logger = Logger.getLogger(QuizController.class);
     @Autowired
     private QuizRepository quizRepository;
     @Autowired
     private AccomplishmentRepository accomplishmentRepository;
+
+    //
+//    @RequestMapping("/home")
+//    String home() {
+//        return "home.html";
+//    }
+// Login form
+    @RequestMapping("/login.html")
+    public String login() {
+        return "login.html";
+    }
+
+    // Login form with error
+    @RequestMapping("/login-error.html")
+    public String loginError(QuizRepository model) {
+//        model.addAttribute("loginError", true);
+        return "login.html";
+    }
 
 
     @GetMapping(path = "/api/quizzes/{id}")

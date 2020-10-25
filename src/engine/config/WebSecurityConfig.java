@@ -20,15 +20,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] allowedResources = {
-                "/h2-console/**",
-                "/api/register",
-                "/actuator/shutdown"};
 
-        // All requests send to the Web Server request must be authenticated
-        http.authorizeRequests()
-                .antMatchers(allowedResources).permitAll()
-                .anyRequest().authenticated();
+        http
+                .formLogin()
+                .loginPage("/login.html")
+                .failureUrl("/login-error.html")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/home.html");
+
+//        String[] allowedResources = {
+//                "/h2-console/**",
+//                "/api/register",
+//                "/actuator/shutdown"};
+//
+//        // All requests send to the Web Server request must be authenticated
+//        http.authorizeRequests()
+//                    .antMatchers(allowedResources).permitAll()
+//                    .anyRequest().authenticated();
 
         // Use AuthenticationEntryPoint to authenticate user/password
         http.httpBasic().authenticationEntryPoint(authEntryPoint);
