@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -32,16 +33,19 @@ public class QuizController {
     private QuizRepository quizRepository;
     @Autowired
     private AccomplishmentRepository accomplishmentRepository;
+    private ModelAndView modelAndView = new ModelAndView();
 
-    //
-//    @RequestMapping("/home")
-//    String home() {
-//        return "home.html";
-//    }
-// Login form
-    @RequestMapping("/login.html")
-    public String login() {
-        return "login.html";
+    @RequestMapping("/")
+    public ModelAndView index() {
+//        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
 
     // Login form with error
