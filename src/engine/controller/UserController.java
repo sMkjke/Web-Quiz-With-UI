@@ -35,4 +35,10 @@ public class UserController {
         userRepository.save(newUser);
         return String.format("Email %s registration successful", newUser.getEmail());
     }
+
+    @PostMapping (value = "/api/register", consumes = "multipart/form-data")
+    public String registerUser (@RequestParam(name = "id") String fooId, @RequestParam String name){
+//            должен сам создать юзера, сам поля засетить и проверить
+                
+    }
 }

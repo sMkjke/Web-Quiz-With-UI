@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 
 @Entity
 public class User {
+
+    // TODO: 26.10.2020 добавить id генерироваться и айди будет ссылкой
     @NotNull
     @NotBlank(message = "Email is required")
     @Email
