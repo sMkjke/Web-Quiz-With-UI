@@ -25,4 +25,5 @@ dependencies {
     // integrates spring boot auth and thymeleaf templating
     compile ("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
     // required for the @@EnableOAuth2Sso annotation
+    compile group: 'org.webjars', name: 'bootstrap'
 }

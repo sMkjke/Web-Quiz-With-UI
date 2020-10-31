@@ -23,7 +23,7 @@ public class AuthenticationEntryPointImpl extends BasicAuthenticationEntryPoint 
     @Override
     public void afterPropertiesSet() {
         // RealmName appears in the login window (Firefox).
-        setRealmName("WebQuizEngine");
+        setRealmName("engine.WebQuizEngine");
         super.afterPropertiesSet();
     }
 }

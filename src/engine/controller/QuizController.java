@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,11 +22,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
-// TODO: 10.09.2020 Сделать авторизацию UI 
-// TODO: 10.09.2020 Сделать UI квизов 
-// TODO: 10.09.2020 Сделать main страничку приветствия 
-
-@RestController
+//@RestController
+@Controller
 public class QuizController {
 
     //    private static final Logger logger = Logger.getLogger(QuizController.class);
@@ -37,22 +35,8 @@ public class QuizController {
 
     @RequestMapping("/")
     public ModelAndView index() {
-//        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login() {
-        modelAndView.setViewName("login");
-        return modelAndView;
-    }
-
-    // Login form with error
-    @RequestMapping("/login-error.html")
-    public String loginError(QuizRepository model) {
-//        model.addAttribute("loginError", true);
-        return "login.html";
     }
 
 
