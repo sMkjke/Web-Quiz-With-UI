@@ -29,7 +29,7 @@ public class User {
     @NotBlank(message = "Password is required")
     @Size(min = 5)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @JsonIgnore // нужно ли
+
     private String password;
 
     public User() {

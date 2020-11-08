@@ -21,13 +21,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http.authorizeRequests().antMatchers("/api/**").authenticated();
         http
                 .formLogin()
                 .loginPage("/login.html")
+//                .defaultSuccessUrl("/home.html", true)
                 .failureUrl("/login-error.html")
                 .and()
                 .logout()
+
                 .logoutSuccessUrl("/home.html");
+                http.csrf().disable();
 
 //        String[] allowedResources = {
 //                "/h2-console/**",
@@ -41,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Use AuthenticationEntryPoint to authenticate user/password
         http.httpBasic().authenticationEntryPoint(authEntryPoint);
+
 
         http.csrf().disable();
         // For the H2 Console
