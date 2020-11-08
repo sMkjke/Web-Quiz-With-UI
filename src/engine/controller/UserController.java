@@ -27,7 +27,7 @@ public class UserController {
     static class UsernameIsTakenException extends RuntimeException {
     }
 
-    @RequestMapping(value = "/api/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerUser(Model model) {
         model.addAttribute("userForm", new User());
         return "registration";
@@ -42,6 +42,7 @@ public class UserController {
         if (userForm.getPassword() != null) {
             userForm.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
         }
+
         userRepository.save(userForm);
         model.addAttribute("userForm", userForm);
         return "simplemessage"; // have to return success page
@@ -64,16 +65,30 @@ public class UserController {
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    @RequestMapping(method = RequestMethod.POST)
+//    @ResponseBody
+//    public String performLogin(
+//            @RequestParam("username") String username,
+//            @RequestParam("password") String password,
+//            HttpServletRequest request, HttpServletResponse response) {
+//        try {
+//            request.login(username, password);
+//            return "{\"status\": true}";
+//        } catch (Exception e) {
+//            return "{\"status\": false, \"error\": \"Bad Credentials\"}";
+//        }
+
+//            @RequestMapping(value = "/login", method = RequestMethod.GET)
 //    @PreAuthorize("permitAll")
 //    public String login(@ModelAttribute User user) {
 //        return "login";
 //    }
-//
+
 //    @RequestMapping(value = "/login-error", method = RequestMethod.GET)
 //    @PreAuthorize("permitAll")
 //    public String loginError(@ModelAttribute User user, Model model) {
 //        model.addAttribute("loginError", true);
 //        return "login";
-//    }
-}
+//    }4
+    }
+

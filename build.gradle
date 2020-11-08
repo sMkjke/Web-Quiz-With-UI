@@ -11,6 +11,7 @@ repositories {
     mavenCentral()
 }
 
+sourceSets.main.java.srcDirs = ['src'] // 'src'
 sourceSets.main.resources.srcDirs = ["src/resources"]
 
 dependencies {
@@ -20,10 +21,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     runtimeOnly 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // thymeleaf templating support for spring boot
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    // integrates spring boot auth and thymeleaf templating
-    compile ("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
-    // required for the @@EnableOAuth2Sso annotation
-    compile group: 'org.webjars', name: 'bootstrap'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compile group: 'org.webjars', name: 'bootstrap', version: '4.1.0'
 }

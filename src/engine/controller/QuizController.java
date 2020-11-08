@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
-//@RestController
 @Controller
 public class QuizController {
 
