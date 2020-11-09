@@ -2,9 +2,11 @@ package engine.controller;
 
 import engine.entity.User;
 import engine.repository.UserRepository;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -64,6 +66,14 @@ public class UserController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView loginPost(@ModelAttribute User userForm, Model model) {
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
+
 
 //    @RequestMapping(method = RequestMethod.POST)
 //    @ResponseBody
