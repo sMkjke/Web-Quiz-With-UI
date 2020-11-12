@@ -2,19 +2,32 @@ package engine.controller;
 
 import engine.entity.User;
 import engine.repository.UserRepository;
-import org.dom4j.rule.Mode;
+import org.apache.catalina.authenticator.SavedRequest;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -67,26 +80,26 @@ public class UserController {
         return modelAndView;
     }
 
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ModelAndView loginPost(@ModelAttribute User userForm, Model model) {
+//        modelAndView.setViewName("home");
+//        return modelAndView;
+//    }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView loginPost(@ModelAttribute User userForm, Model model) {
-        modelAndView.setViewName("home");
-        return modelAndView;
-    }
+    @RequestMapping(method = RequestMethod.POST, value = "/login", produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String performLogin(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.login(username,password);
+            return "{\"status\": true}";
+        } catch (Exception e) {
+            return "{\"status\": false, \"error\": \"Bad Credentials\"}";
+        }
+    }}
 
-
-//    @RequestMapping(method = RequestMethod.POST)
-//    @ResponseBody
-//    public String performLogin(
-//            @RequestParam("username") String username,
-//            @RequestParam("password") String password,
-//            HttpServletRequest request, HttpServletResponse response) {
-//        try {
-//            request.login(username, password);
-//            return "{\"status\": true}";
-//        } catch (Exception e) {
-//            return "{\"status\": false, \"error\": \"Bad Credentials\"}";
-//        }
 
 //            @RequestMapping(value = "/login", method = RequestMethod.GET)
 //    @PreAuthorize("permitAll")
@@ -100,5 +113,4 @@ public class UserController {
 //        model.addAttribute("loginError", true);
 //        return "login";
 //    }4
-    }
 

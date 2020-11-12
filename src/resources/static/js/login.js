@@ -1,25 +1,35 @@
-$('.message a').click(function(){
+$('.message a').click(function () {
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 });
 
 
+$(document).ready(function() {
 
-jQuery(document).ready(function ($) {
-    $('#loginform').submit(function (event) {
-        event.preventDefault();
-        var data = 'username=' + $('#username').val() + '&password=' + $('#password').val();
-        $.ajax({
-            data: data,
-            timeout: 1000,
-            type: 'POST',
-            url: '/login'
+    $("#loginform").click(login)
 
-        // }).done(function(data, textStatus, jqXHR) {
-        //     var preLoginInfo = JSON.parse($.cookie('dashboard.pre.login.request'));
-        //     window.location = preLoginInfo.url;
-        //
-        // }).fail(function(jqXHR, textStatus, errorThrown) {
-        //     alert('try again!');
-        // });
+});
+
+function login() {
+
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: $('#loginform').serialize(),
+        cache: false,
+        dataType: "json",
+        crossDomain: false,
+        success: function (data) {
+            var response = jQuery.parseJSON(data);
+            if (response.success === true) {
+                console.info("Authentication Success!");
+                window.location("/api/quizzes");
+            }
+            else {
+                console.error("Unable to login");
+            }
+        },
+        error: function (data) {
+            console.error("Login failure");
+        }
     });
-});}
+}
