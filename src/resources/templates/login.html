@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <title>Login page</title>
+</head>
+<body>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div th:insert="fragments/imports :: imports"></div>
+
+<script type="text/javascript">
+
+
+    $('.message a').click(function () {
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    });
+
+
+    $(document).ready(function () {
+        console.log("register on ready");
+        $("#loginform").submit(login);
+    });
+
+    function login(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('login');
+        $.ajax({
+            type: 'POST',
+            url: "/login-perform",
+            data: $('#loginform').serialize(),
+            cache: false,
+            dataType: "json",
+            crossDomain: false,
+            success: function (data) {
+                console.log(data);
+                if (data.success === true) {
+                    console.log("Authentication Success!");
+                    window.location.assign(data.redirect != null ? data.redirect : "/api/quizzes");
+                } else {
+                    console.log("Unable to login");
+                }
+            },
+            error: function (data) {
+                console.log("Login failure");
+            }
+        });
+    }
+</script>
+<div class="login-page">
+    <div class="form">
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <!--        <form th:action="@{/login.html}" method="post" id="loginform">-->
+        <form id="loginform" name="loginform" method="post">
+            <label for="username">Username</label>:
+            <input type="text" id="username" name="username" autocomplete="username"/> <br/>
+            <label for="password">Password</label>:
+            <input type="password" id="password" name="password" autocomplete="current-password"/> <br/>
+            <button type="submit">log in</button>
+            <p>
+            <p class="message">Not registered? <a href="/register">Create an account</a></p>
+            <p class="message">Logout <a href="/logout">Log out</a></p>
+        </form>
+    </div>
+</div>
+</body>
+</html>

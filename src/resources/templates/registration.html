@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <title>Registration page</title>
+</head>
+<body>
+
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+
+<header>
+    <script type="text/javascript" src='js/login.js'></script>
+</header>
+
+<div class="login-page">
+    <div class="form">
+        <form action="#" th:action="@{/api/register}" th:object="${userForm}" method="post">
+            <!--    <label for="">E-mail</label>-->
+            <object th:field="*{id}"/>
+            <label for="email">E-mail: </label>
+            <input type="text" th:field="*{email}" autofocus="autofocus"/> <br/>
+            <label for="password">Password: </label>
+            <input type="password" th:field="*{password}"> <br/>
+            <input type="submit" value="Register"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+

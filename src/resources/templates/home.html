@@ -1,0 +1,30 @@
+<!--<!DOCTYPE HTML>-->
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+
+<body>
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<header>
+    <script type="text/javascript" src= '/js/main.js'></script>
+</header>
+
+<section class="jumbotron text-center d-flex aling-items-center h-100" layout:fragment="pageHead">
+    <div class="container align-self-center">
+        <h1 class="jumbotron-heading">Simple Quiz</h1>
+        <p>
+            <a th:href="@{/register}" class="btn btn-outline-info btn-lg my-3">New User registration</a>
+        </p>
+        <b></b>
+        <a th:href="@{/login}" class="btn btn-outline-info btn-lg my-3">Log In</a>
+        </p>
+    </div>
+</section>
+</body>
+</html>
