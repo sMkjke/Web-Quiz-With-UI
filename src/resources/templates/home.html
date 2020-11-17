@@ -1,21 +1,18 @@
-<!DOCTYPE HTML>
+<!--<!DOCTYPE HTML>-->
 <html lang="ru"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="default">
 <head>
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="lib/jquery.min.js"></script>
-    <script src="lib/jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 
 <body>
 <div th:insert="fragments/imports :: imports"></div>
 <div th:insert="fragments/navbar :: navbar"></div>
-
 <header>
-    <script type="text/javascript" src='js/main.js'></script>
+    <script type="text/javascript" src= '/js/main.js'></script>
 </header>
 
 <section class="jumbotron text-center d-flex aling-items-center h-100" layout:fragment="pageHead">

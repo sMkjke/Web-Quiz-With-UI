@@ -1,6 +1,5 @@
 package engine.config;
 
-import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import engine.authorisation.AuthenticationFailureHandler;
 import engine.authorisation.AuthenticationSuccessHandler;
 import engine.service.UserService;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -29,39 +27,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
 
-    @Override
+    @Override//
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .authorizeRequests()
-                .antMatchers("/", "/about", "/api/**").permitAll()
+                .antMatchers("/", "/about", "/api/**", "/login*", "/register", "/login-perform").permitAll()
+                .antMatchers("/css/**", "/js/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .formLogin()
-                .usernameParameter("sec-user")
-                .passwordParameter("sec-password")
+                .loginPage("/login")
+                .loginProcessingUrl("/login-perform")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .failureUrl("/login?error=true")
                 .failureHandler(authenticationFailureHandler)
                 .successHandler(authenticationSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/login")
                 .deleteCookies("remember-me", "JSESSIONID")
                 .permitAll()
                 .and()
                 .rememberMe();
+        http
+                .csrf().disable();
     }
-
-    // Old working form-based
-//        http
-//                .formLogin()
-//                .loginPage("/login.html")
-//                .failureUrl("/login-error.html")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/home.html");
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -74,5 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
+//        auth.inMemoryAuthentication()
+//                .withUser("user1").password(passwordEncoder().encode("123")).roles("USER")
+//                .and()
+//                .withUser("user2").password(passwordEncoder().encode("123")).roles("USER")
+//                .and()
+//                .withUser("admin").password(passwordEncoder().encode("123")).roles("ADMIN");
     }
 }

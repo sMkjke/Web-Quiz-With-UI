@@ -3,33 +3,34 @@ $('.message a').click(function () {
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $("#loginform").click(login)
+    $("form").click(login)
 
 });
 
 function login() {
 
+    console.log('login');
     $.ajax({
         type: 'POST',
         url: '/login',
         data: $('#loginform').serialize(),
         cache: false,
-        dataType: "json",
+        // dataType: "json",
         crossDomain: false,
         success: function (data) {
+            console.log(data);
             var response = jQuery.parseJSON(data);
             if (response.success === true) {
-                console.info("Authentication Success!");
+                console.log("Authentication Success!");
                 window.location("/api/quizzes");
-            }
-            else {
-                console.error("Unable to login");
+            } else {
+                console.log("Unable to login");
             }
         },
         error: function (data) {
-            console.error("Login failure");
+            console.log("Login failure");
         }
     });
 }
