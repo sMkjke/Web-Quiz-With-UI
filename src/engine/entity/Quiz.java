@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 
 @Entity
 public class Quiz {
-    @NotBlank
+    @NotBlank(message = "Title can't be empty")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Description can't be empty")
     private String text;
 
     @JsonIgnore

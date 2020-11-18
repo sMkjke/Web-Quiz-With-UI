@@ -4,8 +4,10 @@ import engine.Accomplishment;
 import engine.QuizAnswer;
 import engine.QuizResult;
 import engine.entity.Quiz;
+import engine.entity.User;
 import engine.repository.AccomplishmentRepository;
 import engine.repository.QuizRepository;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Controller
 public class QuizController {
@@ -94,5 +99,35 @@ public class QuizController {
         }
         quizRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Quiz add
+    @GetMapping("/addquiz")
+    public String quizAdd(
+            @ModelAttribute Quiz quiz, Model model) {
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("questions", new HashSet<TypePatternQuestions.Question>());
+        return "addquiz";
+    }
+
+    @PostMapping("/quizSave")
+    public String quizSave(
+            Principal principal,
+            @Valid @ModelAttribute Quiz quiz,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        quiz.setAuthor(principal.getName());
+
+//        if (bindingResult.hasErrors()) {
+//            return "quizEdit";
+//        }
+
+        quizRepository.save(quiz);
+//        Iterable<Quiz> quizzes = quizRepository.findAll();
+//        Pageable paging = PageRequest.of(page, 10);
+//        model.addAttribute("quizzes", quizzes);
+
+        return "redirect:/index";
     }
 }
