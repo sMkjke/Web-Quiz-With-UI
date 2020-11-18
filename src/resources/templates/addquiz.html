@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+
+<body>
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<header>
+    <script type="text/javascript" src= '/js/main.js'></script>
+</header>
+
+
+<div class="container mt-5">
+    <form th:action="@{/quizSave}" th:object="${quiz}" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name">Title</label>
+                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+                       id="name" th:field="*{title}" th:placeholder="Title"/>
+                <div class="invalid-feedback" th:errors="*{title}">
+                </div>
+<!--            </div>-->
+<!--            <div class="form-group col-md-2">-->
+<!--                <label for="tag">Tag</label>-->
+<!--                <input type="text" class="form-control" id="tag" th:field="*{tag}" th:placeholder="Tag"/>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="form-group p-0 col-md-8">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" th:classappend="${#fields.hasErrors('text')} ? 'is-invalid'"
+                      th:field="*{text}" rows="3" th:placeholder="Description"></textarea>
+            <div class="invalid-feedback" th:errors="*{text}">
+            </div>
+        </div>
+        <input type="hidden" name="id" th:if="${quiz}" th:value="${quiz.id}">
+        <button type="submit" class="btn btn-dark">Save quiz</button>
+        <button type="reset" class="btn btn-outline-dark">Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
