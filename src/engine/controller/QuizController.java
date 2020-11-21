@@ -110,7 +110,7 @@ public class QuizController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/quizSave")
+    @PostMapping("/quizsave")
     public String quizSave(
             @AuthenticationPrincipal UserPrincipal user,
             @Valid @ModelAttribute Quiz quiz,
@@ -120,7 +120,7 @@ public class QuizController {
         quiz.setAuthor(user.getUser());
 
         if (bindingResult.hasErrors()) {
-            return "quizEdit";
+            return "quizedit";
         }
 
         quizRepository.save(quiz);
@@ -133,29 +133,30 @@ public class QuizController {
 
     @GetMapping("/quizzes")
     public String index(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal user,
             Model model
     ) {
         Iterable<Quiz> quizzes;
 
         quizzes = quizRepository.findAll();
 
+        model.addAttribute("isEnabled", user.isEnabled());;
         model.addAttribute("quizzes", quizzes);
         return "quizzes";
     }
 
-    @GetMapping("/quizEdit")
+    @GetMapping("/quizedit")
     public String quizEdit(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal user,
             @RequestParam Quiz quiz,
             Model model) {
         if (!user.equals(quiz.getAuthor())) {
-            return "redirect:/quizAdd";
+            return "redirect:/quizadd";
         }
 
         model.addAttribute("quiz", quiz);
 
-        return "quizEdit";
+        return "quizedit";
     }
     @PostMapping("quizzes/delete")
     public String delete(@RequestParam Integer id, Model model) {
@@ -165,6 +166,6 @@ public class QuizController {
         model.addAttribute("quiz", new Quiz());
         model.addAttribute("quizzes", quizzes);
 
-        return "redirect:/index";
+        return "redirect:/quizzes";
     }
 }

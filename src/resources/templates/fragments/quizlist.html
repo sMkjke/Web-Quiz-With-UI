@@ -10,10 +10,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </form>
+                <form th:action="@{/quizedit}" method="get" class="float-right">
+                    <input type="hidden" th:name="id" th:value="${quiz.id}"/>
+                    <button class="fas fa-edit mr-1" data-fa-transform="grow-2 down-2">>
+                    </button>
+                </form>
 <!--                <a class="custom-link float-right"-->
 <!--                   th:if="${quiz.author.id} == ${#authentication.principal.id}"-->
-<!--                   th:href="@{/quizEdit(quiz=__${quiz.id}__)}"><i class="fas fa-edit mr-1" data-fa-transform="grow-2 down-2"></i>-->
-                </a>
+<!--                   th:href="@{/quizedit}"><i class="fas fa-edit mr-1" data-fa-transform="grow-2 down-2"></i>-->
+<!--                </a>-->
             </div>
             <div class="card-body">
                 <h5 th:text="${quiz.title}" class="card-title">Quiz name</h5>

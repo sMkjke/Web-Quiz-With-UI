@@ -2,6 +2,7 @@ package engine.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,4 +59,5 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
 }
