@@ -1,11 +1,11 @@
 package engine.controller;
 
 import engine.Accomplishment;
-import engine.QuizAnswer;
-import engine.QuizResult;
 import engine.entity.Quiz;
+import engine.entity.User;
 import engine.repository.AccomplishmentRepository;
 import engine.repository.QuizRepository;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,19 +13,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Controller
 public class QuizController {
 
-    //    private static final Logger logger = Logger.getLogger(QuizController.class);
     @Autowired
     private QuizRepository quizRepository;
     @Autowired
@@ -60,24 +62,24 @@ public class QuizController {
         return quizRepository.findAll(paging);
     }
 
-    @PostMapping(path = "/api/quizzes/{id}/solve")
-    public QuizResult checkAnswer(@RequestBody QuizAnswer guess, @PathVariable int id, Principal principal) {
-        Quiz question = quizRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if (question.isCorrect(guess.getAnswer())) {
-            Accomplishment accomplishment = new Accomplishment();
-            accomplishment.setCompletedAt(LocalDateTime.now());
-            accomplishment.setQuestionId(id);
-            accomplishment.setUserEmail(principal.getName());
-
-            accomplishmentRepository.save(accomplishment);
-
-            return QuizResult.CORRECT_ANSWER;
-        } else {
-            return QuizResult.WRONG_ANSWER;
-        }
-    }
+//    @PostMapping(path = "/api/quizzes/{id}/solve")
+//    public QuizResult checkAnswer(@RequestBody QuizAnswer guess, @PathVariable int id, Principal principal) {
+//        Quiz question = quizRepository.findById(id).orElseThrow(() ->
+//                new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        if (question.isCorrect(guess.getAnswer())) {
+//            Accomplishment accomplishment = new Accomplishment();
+//            accomplishment.setCompletedAt(LocalDateTime.now());
+//            accomplishment.setQuestionId(id);
+//            accomplishment.setUserEmail(principal.getName());
+//
+//            accomplishmentRepository.save(accomplishment);
+//
+//            return QuizResult.CORRECT_ANSWER;
+//        } else {
+//            return QuizResult.WRONG_ANSWER;
+//        }
+//    }
 
     @PostMapping(path = "/api/quizzes")
     public Quiz addQuestion(@RequestBody @Valid Quiz quiz, Principal principal) {
@@ -94,5 +96,54 @@ public class QuizController {
         }
         quizRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Quiz add
+    @GetMapping("/addquiz")
+    public String quizAdd(
+            @ModelAttribute Quiz quiz, Model model) {
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("questions", new HashSet<TypePatternQuestions.Question>());
+        return "addquiz";
+    }
+
+    @PostMapping("/quizSave")
+    public String quizSave(
+            Principal principal,
+            @Valid @ModelAttribute Quiz quiz,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        quiz.setAuthor(principal.getName());
+
+        if (bindingResult.hasErrors()) {
+            return "quizEdit";
+        }
+
+        quizRepository.save(quiz);
+        Iterable<Quiz> quizzes = quizRepository.findAll();
+        model.addAttribute("quizzes", quizzes);
+
+//        return "redirect:/editQuiz/" + quiz.getId();
+        return "redirect:/quizzes";
+    }
+    @GetMapping("/quizzes")
+    public String index(
+            Principal principal,
+//            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model
+    ) {
+        Iterable<Quiz> quizzes;
+
+//        if (filter != null && !filter.isEmpty()) {
+//            quizzes = quizRepository.findByTag(filter);
+//        } else {
+            quizzes = quizRepository.findAll();
+//        }
+
+        model.addAttribute("isAdmin", principal);
+        model.addAttribute("quizzes", quizzes);
+
+        return "index";
     }
 }

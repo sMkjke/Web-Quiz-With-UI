@@ -16,5 +16,5 @@ public interface QuizRepository extends CrudRepository<Quiz, Integer> {
 
     Page<Quiz> findAll(Pageable pageable);
 
-    <T extends Quiz> T save(T question);
+//    <T extends Quiz> T save(T question);
 }
