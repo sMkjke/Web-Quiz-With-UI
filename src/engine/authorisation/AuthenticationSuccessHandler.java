@@ -23,7 +23,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        String json = "{\"success\":true,\"redirect\":\"/api/quizzies\"}";
+        String json = "{\"success\":true,\"redirect\":\"/quizzes\"}";
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         out.print(json);

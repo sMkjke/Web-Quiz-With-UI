@@ -18,14 +18,16 @@ public class Quiz {
     @NotBlank(message = "Description can't be empty")
     private String text;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
+    private User author;
 
 //    @NotNull
 //    @Size(min = 2)
     @ElementCollection
     private List<String> options;
 
-    protected Quiz() {
+    public Quiz() {
     }
 
     public String getTitle() {
@@ -60,15 +62,19 @@ public class Quiz {
         this.id = id;
     }
 
-    public String getAuthor() {
+    public String getAuthorName() {
+        return author != null ? author.getEmail() : "No author";
+    }
+
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-//    @Override
+    //    @Override
 //    public String toString() {
 //        return "Question{" +
 //                "title='" + title + '\'' +

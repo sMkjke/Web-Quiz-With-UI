@@ -5,6 +5,7 @@ import engine.entity.Quiz;
 import engine.entity.User;
 import engine.repository.AccomplishmentRepository;
 import engine.repository.QuizRepository;
+import engine.service.UserPrincipal;
 import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,11 +83,11 @@ public class QuizController {
 //        }
 //    }
 
-    @PostMapping(path = "/api/quizzes")
-    public Quiz addQuestion(@RequestBody @Valid Quiz quiz, Principal principal) {
-        quiz.setAuthor(principal.getName());
-        return quizRepository.save(quiz);
-    }
+//    @PostMapping(path = "/api/quizzes")
+//    public Quiz addQuestion(@RequestBody @Valid Quiz quiz, Principal principal) {
+//        quiz.setAuthor(principal.getName());
+//        return quizRepository.save(quiz);
+//    }
 
     @DeleteMapping(path = "/api/quizzes/{id}")
     public ResponseEntity<String> deleteQuiz(@PathVariable int id, Principal principal) {
@@ -107,14 +109,15 @@ public class QuizController {
         return "addquiz";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/quizSave")
     public String quizSave(
-            Principal principal,
+            @AuthenticationPrincipal UserPrincipal user,
             @Valid @ModelAttribute Quiz quiz,
             BindingResult bindingResult,
             Model model
     ) {
-        quiz.setAuthor(principal.getName());
+        quiz.setAuthor(user.getUser());
 
         if (bindingResult.hasErrors()) {
             return "quizEdit";
@@ -124,26 +127,44 @@ public class QuizController {
         Iterable<Quiz> quizzes = quizRepository.findAll();
         model.addAttribute("quizzes", quizzes);
 
-//        return "redirect:/editQuiz/" + quiz.getId();
         return "redirect:/quizzes";
     }
+
+
     @GetMapping("/quizzes")
     public String index(
-            Principal principal,
-//            @RequestParam(required = false, defaultValue = "") String filter,
+            @AuthenticationPrincipal User user,
             Model model
     ) {
         Iterable<Quiz> quizzes;
 
-//        if (filter != null && !filter.isEmpty()) {
-//            quizzes = quizRepository.findByTag(filter);
-//        } else {
-            quizzes = quizRepository.findAll();
-//        }
+        quizzes = quizRepository.findAll();
 
-        model.addAttribute("isAdmin", principal);
+        model.addAttribute("quizzes", quizzes);
+        return "quizzes";
+    }
+
+    @GetMapping("/quizEdit")
+    public String quizEdit(
+            @AuthenticationPrincipal User user,
+            @RequestParam Quiz quiz,
+            Model model) {
+        if (!user.equals(quiz.getAuthor())) {
+            return "redirect:/quizAdd";
+        }
+
+        model.addAttribute("quiz", quiz);
+
+        return "quizEdit";
+    }
+    @PostMapping("quizzes/delete")
+    public String delete(@RequestParam Integer id, Model model) {
+        quizRepository.deleteById(id);
+        Iterable<Quiz> quizzes = quizRepository.findAll();
+
+        model.addAttribute("quiz", new Quiz());
         model.addAttribute("quizzes", quizzes);
 
-        return "index";
+        return "redirect:/index";
     }
 }
