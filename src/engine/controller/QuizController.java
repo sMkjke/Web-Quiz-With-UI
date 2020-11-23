@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Controller
 public class QuizController {
@@ -109,7 +111,7 @@ public class QuizController {
         return "addquiz";
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @PostMapping("/quizsave")
     public String quizSave(
             @AuthenticationPrincipal UserPrincipal user,
@@ -147,17 +149,18 @@ public class QuizController {
 
     @GetMapping("/quizedit")
     public String quizEdit(
-            @AuthenticationPrincipal UserPrincipal user,
-            @RequestParam Quiz quiz,
-            Model model) {
+            @AuthenticationPrincipal User user,
+            Model model,
+            int id) {
+        Quiz quiz = quizRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!user.equals(quiz.getAuthor())) {
             return "redirect:/quizadd";
         }
-
         model.addAttribute("quiz", quiz);
 
         return "quizedit";
     }
+
     @PostMapping("quizzes/delete")
     public String delete(@RequestParam Integer id, Model model) {
         quizRepository.deleteById(id);
