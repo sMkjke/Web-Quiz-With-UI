@@ -3,14 +3,16 @@ package engine.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Title can't be empty")
     private String title;
@@ -18,14 +20,19 @@ public class Quiz {
     @NotBlank(message = "Description can't be empty")
     private String text;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
+    private User author;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Question> questions = new HashSet<>();
 
 //    @NotNull
 //    @Size(min = 2)
     @ElementCollection
     private List<String> options;
 
-    protected Quiz() {
+    public Quiz() {
     }
 
     public String getTitle() {
@@ -52,44 +59,31 @@ public class Quiz {
         this.options = options;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getAuthor() {
+    public String getAuthorName() {
+        return author != null ? author.getEmail() : "No author";
+    }
+
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Question{" +
-//                "title='" + title + '\'' +
-//                ", text='" + text + '\'' +
-//                ", options=" + options +
-//                ", answer=" + answer +
-//                ", id=" + id +
-//                '}';
-//    }
+    public Set<Question> getQuestions() {
+        return questions;
+    }
 
-    //    public boolean isCorrect(List<Integer> options) {
-//        return options.stream().sorted().collect(Collectors.toList()).equals(answer);
-//    }
-
-    //    @ElementCollection
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    private List<Integer> answer;
-
-
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    private int id;
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 }

@@ -20,10 +20,6 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private MessageSource messageSource;
-    private ModelAndView modelAndView = new ModelAndView();
-
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "User is already registered!")
     static class UsernameIsTakenException extends RuntimeException {
@@ -62,9 +58,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@ModelAttribute User userForm, Model model) {
-        modelAndView.setViewName("login");
-        return modelAndView;
+    public String login(@ModelAttribute User userForm, Model model) {
+        model.addAttribute("login");
+        return "login";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)

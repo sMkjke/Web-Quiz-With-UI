@@ -14,17 +14,18 @@
 <header>
     <script type="text/javascript" src= '/js/main.js'></script>
 </header>
-
-
 <div class="container mt-5">
-    <form th:action="@{/quizsave}" th:object="${quiz}" method="post">
+    <form action="#" th:action="@{/quizsave}" th:object="${quiz}" method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="name">Title</label>
+                <label for="name">Name</label>
                 <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
-                       id="name" th:field="*{title}" th:placeholder="Title"/>
+                       id="name" th:field="*{title}" th:placeholder="Name"/>
                 <div class="invalid-feedback" th:errors="*{title}">
                 </div>
+            </div>
+
+        </div>
         <div class="form-group p-0 col-md-8">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" th:classappend="${#fields.hasErrors('text')} ? 'is-invalid'"
@@ -35,8 +36,6 @@
         <input type="hidden" name="id" th:if="${quiz}" th:value="${quiz.id}">
         <button type="submit" class="btn btn-dark">Save quiz</button>
         <button type="reset" class="btn btn-outline-dark">Reset</button>
-            </div>
-        </div>
     </form>
 </div>
 </body>

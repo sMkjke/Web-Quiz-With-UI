@@ -1,0 +1,31 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="quizlist (quizzes)">
+    <div class="card-columns">
+        <div th:each="quiz : ${quizzes}" class="card my-3">
+            <!--/*@thymesVar id="quiz" type="engine.entity.Quiz"*/-->
+            <div class="card-header pl-3 py-1">
+                <form th:action="@{/quizzes/delete}" method="post" class="float-right">
+                    <input type="hidden" th:name="id" th:value="${quiz.id}"/>
+                    <button type="submit" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </form>
+                <form th:action="@{/quizedit}" method="get" class="float-right">
+                    <input type="hidden" th:name="id" th:value="${quiz.id}"/>
+                    <button class="fas fa-edit mr-1" data-fa-transform="grow-2 down-2">>
+                    </button>
+                </form>
+            </div>
+            <div class="card-body">
+                <h5 th:text="${quiz.title}" class="card-title">Quiz name</h5>
+                <p class="card-text" th:text="${quiz.text}"></p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted" th:text="|Creator:  |"></small>
+                <a th:href="@{/user-quizzes/__${quiz.author.id}__}" th:text="${quiz.authorName}"></a>
+                <a th:href="@{/quizdetails/__${quiz.id}__}" class="btn btn-secondary float-right btn-sm mb-2">Moderate Quiz</a>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

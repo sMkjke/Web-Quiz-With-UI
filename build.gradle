@@ -4,12 +4,24 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+//mainClassName = 'engine.WebQuizEngine'
+apply plugin: 'application'
 
+mainClassName = 'engine.WebQuizEngine'
 sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
 }
+
+wrapper {
+    gradleVersion = '5.3.1'
+}
+//
+//jar {
+//    baseName = 'gs-gradle'
+//    version =  '0.1.0'
+//}
 
 sourceSets.main.java.srcDirs = ['src'] // 'src'
 sourceSets.main.resources.srcDirs = ["src/resources"]
