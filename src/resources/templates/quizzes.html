@@ -1,9 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
-<div th:insert="fragments/navbar :: navbar"></div>
-<div th:insert="fragments/imports :: imports"></div>
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
 
+<body>
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<header>
+    <script type="text/javascript" src= '/js/main.js'></script>
+</header>
 <div class="container mt-5">
     <form method="get" th:action="@{/quizzes}" class="form-inline mb-5">
         <a class="btn btn-dark ml-2 " th:href="@{/addquiz}" role="button">Add new quiz</a>

@@ -1,13 +1,25 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+
 <body>
-<nav th:replace="fragments/navbar :: navbar"></nav>
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<header>
+    <script type="text/javascript" src= '/js/main.js'></script>
+</header>
 <div class="container mt-5">
     <form action="#" th:action="@{/quizsave}" th:object="${quiz}" method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
                        id="name" th:field="*{title}" th:placeholder="Name"/>
                 <div class="invalid-feedback" th:errors="*{title}">
                 </div>

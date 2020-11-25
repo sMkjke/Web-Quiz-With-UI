@@ -3,14 +3,16 @@ package engine.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Title can't be empty")
     private String title;
@@ -21,6 +23,9 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "user_id")
     private User author;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Question> questions = new HashSet<>();
 
 //    @NotNull
 //    @Size(min = 2)
@@ -54,11 +59,11 @@ public class Quiz {
         this.options = options;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,28 +79,11 @@ public class Quiz {
         this.author = author;
     }
 
-    //    @Override
-//    public String toString() {
-//        return "Question{" +
-//                "title='" + title + '\'' +
-//                ", text='" + text + '\'' +
-//                ", options=" + options +
-//                ", answer=" + answer +
-//                ", id=" + id +
-//                '}';
-//    }
+    public Set<Question> getQuestions() {
+        return questions;
+    }
 
-    //    public boolean isCorrect(List<Integer> options) {
-//        return options.stream().sorted().collect(Collectors.toList()).equals(answer);
-//    }
-
-    //    @ElementCollection
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    private List<Integer> answer;
-
-
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    private int id;
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
 }

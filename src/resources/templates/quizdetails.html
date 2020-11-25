@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+
+<body>
+<div th:insert="fragments/imports :: imports"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<header>
+    <script type="text/javascript" src='/js/main.js'></script>
+</header>
+<div class="container mt-5">
+
+    <div>
+        <h2 th:text="${quiz.title}"></h2>
+        <p><strong>Description: </strong><span th:text="${quiz.text}"></span></p>
+    </div>
+
+    <div class="bg-light col-8 m-3" th:each="question : ${questions}">
+        <div class="m-2"><strong>Question: </strong>
+            <span th:text="${question.text}"></span>
+        </div>
+        <div class="radio" th:each="option,i: ${question.options.entrySet()}">
+            <label>
+                <input type="radio" name="optionsRadios" id="" value="1" th:text="*{option.getValue()}">
+            </label>
+        </div>
+    </div>
+
+    <a class="btn btn-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+       aria-controls="collapseExample">
+        Add new Question
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group mt-3">
+            <form th:action="@{/questionadd}" th:object="${question}" method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="quest" th:field="*{text}"
+                               placeholder="Enter Question..."/>
+                    </div>
+                </div>
+                <div class="container col-10">
+                    <table id="myTable" class=" table order-list">
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-10">
+                                <input type="radio" name="test" value="0" th:checked="*{answerNumber}">
+                                <input type="text" th:field="*{options[0]}" class="form-control"
+                                       placeholder="Add Option..."/>
+                            </td>
+                            </td>
+                            <td class="col-sm-2"><a class="deleteRow"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-10">
+                                <input type="radio" name="test" value="1" th:checked="*{answerNumber}">
+                                <input type="text" th:field="*{options[1]}" class="form-control"
+                                       placeholder="Add Option..."/>
+                            </td>
+                            </td>
+                            <td class="col-sm-2"><a class="deleteRow"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-10">
+                                <input type="radio" name="test" value="2" th:checked="*{answerNumber}">
+                                <input type="text" th:field="*{options[2]}" class="form-control"
+                                       placeholder="Add Option..."/>
+                            </td>
+                            </td>
+                            <td class="col-sm-2"><a class="deleteRow"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-10">
+                                <input type="radio" name="test" value="0" th:checked="*{answerNumber}">
+                                <input type="text" th:field="*{options[3]}" class="form-control"
+                                       placeholder="Add Option..."/>
+                            </td>
+                            </td>
+                            <td class="col-sm-2"><a class="deleteRow"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <input type="hidden" name="quiz" th:value="${quiz.id}">
+                <button type="submit" class="btn btn-dark">Add</button>
+            </form>
+            <script type="text/javascript">
+                var radios = document.getElementsByTagName('input');
+                for (i = 0; i < radios.length; i++) {
+                    radios[i].onclick = function (e) {
+                        if (e.ctrlKey || e.metaKey) {
+                            this.checked = false;
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

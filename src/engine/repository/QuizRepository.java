@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface QuizRepository extends CrudRepository<Quiz, Integer> {
+public interface QuizRepository extends CrudRepository<Quiz, Long> {
 
-    Optional<Quiz> findById(Integer id);
+    Optional<Quiz> findById(Long id);
 
     Page<Quiz> findAll(Pageable pageable);
 
-//    <T extends Quiz> T save(T question);
 }
