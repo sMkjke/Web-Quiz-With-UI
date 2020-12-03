@@ -86,4 +86,8 @@ public class Quiz {
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
+//
+//    public Question getAnswer(Set<Question> questionSet) {
+//
+//    }
 }

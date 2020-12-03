@@ -21,21 +21,24 @@
         <p><strong>Description: </strong><span th:text="${quiz.text}"></span></p>
     </div>
 
-    <div class="bg-light col-8 m-3" th:each="question : ${questions}">
-        <div class="m-2"><strong>Question: </strong>
-            <span th:text="${question.text}"></span>
-        </div>
-        <div class="radio" th:each="option,i: ${question.options.entrySet()}">
-            <label>
-                <input type="radio" name="optionsRadios" id="" value="1" th:text="*{option.getValue()}">
-            </label>
-        </div>
+<div class="bg-light col-8 m-3" th:each="question : ${questions}">
+    <div class="m-2"><strong>Question: </strong>
+        <span th:text="${question.text}"></span>
     </div>
+    <div th:each="option,i: ${question.options.entrySet()}">
+        <label>
+            <span th:text="*{option.getValue()}">
+        </label>
+    </div>
+    <div>Answer: <strong th:text="${question.answerNumber}"></strong></div>
+</div>
 
+<p></p>
     <a class="btn btn-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
        aria-controls="collapseExample">
-        Add new Question
+        Add new Quiz
     </a>
+
     <div class="collapse" id="collapseExample">
         <div class="form-group mt-3">
             <form th:action="@{/questionadd}" th:object="${question}" method="post">
@@ -45,12 +48,13 @@
                                placeholder="Enter Question..."/>
                     </div>
                 </div>
+
                 <div class="container col-10">
                     <table id="myTable" class=" table order-list">
                         <tbody>
                         <tr>
                             <td class="col-sm-10">
-                                <input type="radio" name="test" value="0" th:checked="*{answerNumber}">
+                                <input type="radio" name="test" value="1" th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[0]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </td>
@@ -62,7 +66,7 @@
                         <tbody>
                         <tr>
                             <td class="col-sm-10">
-                                <input type="radio" name="test" value="1" th:checked="*{answerNumber}">
+                                <input type="radio" name="test" value="2" th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[1]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </td>
@@ -74,7 +78,7 @@
                         <tbody>
                         <tr>
                             <td class="col-sm-10">
-                                <input type="radio" name="test" value="2" th:checked="*{answerNumber}">
+                                <input type="radio" name="test" value="3" th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[2]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </td>
@@ -86,7 +90,7 @@
                         <tbody>
                         <tr>
                             <td class="col-sm-10">
-                                <input type="radio" name="test" value="0" th:checked="*{answerNumber}">
+                                <input type="radio" name="test" value="4" th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[3]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </td>
@@ -100,22 +104,24 @@
                         </tr>
                         </tfoot>
                     </table>
-                </div>
-                <input type="hidden" name="quiz" th:value="${quiz.id}">
-                <button type="submit" class="btn btn-dark">Add</button>
+                    <div>Answer: <strong th:text="${question.answerNumber}"></strong></div>
+                    <input type="hidden" name="quiz" th:value="${quiz.id}">
+                    <button type="submit" class="btn btn-dark">Add</button>
             </form>
-            <script type="text/javascript">
-                var radios = document.getElementsByTagName('input');
-                for (i = 0; i < radios.length; i++) {
-                    radios[i].onclick = function (e) {
-                        if (e.ctrlKey || e.metaKey) {
-                            this.checked = false;
-                        }
+        </div>
+
+        <script type="text/javascript">
+            var radios = document.getElementsByTagName('input');
+            for (i = 0; i < radios.length; i++) {
+                radios[i].onclick = function (e) {
+                    if (e.ctrlKey || e.metaKey) {
+                        this.checked = false;
                     }
                 }
-            </script>
-        </div>
+            }
+        </script>
     </div>
+</div>
 </div>
 </body>
 </html>

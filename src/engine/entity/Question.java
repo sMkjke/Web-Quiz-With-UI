@@ -28,7 +28,6 @@ public class Question {
 
     private Integer answerNumber;
 
-
     public Long getId() {
         return id;
     }
