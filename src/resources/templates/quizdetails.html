@@ -30,7 +30,7 @@
             <span th:text="*{option.getValue()}">
         </label>
     </div>
-    <div>Answer: <strong th:text="${question.answerNumber}"></strong></div>
+    <div>Answer: <strong th:text="${question.options.get(question.answerNumber - 1)}"></strong></div>
 </div>
 
 <p></p>

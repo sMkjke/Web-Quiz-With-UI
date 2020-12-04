@@ -1,6 +1,5 @@
 package engine.controller;
 
-import engine.Accomplishment;
 import engine.entity.Question;
 import engine.entity.Quiz;
 import engine.entity.User;
@@ -10,12 +9,7 @@ import engine.repository.QuizRepository;
 import engine.service.UserPrincipal;
 import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,38 +40,6 @@ public class QuizController {
         modelAndView.setViewName("home");
         return modelAndView;
     }
-
-
-//    @GetMapping(path = "/api/quizzes/{id}")
-//    public Quiz getQuestion(@PathVariable Long id) {
-//        return quizRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//    }
-//
-//    @GetMapping(path = "/api/quizzes/completed")
-//    public Page<Accomplishment> getCompleted(@RequestParam(defaultValue = "0") int page, Principal principal) {
-//        Pageable paging = PageRequest.of(page, 10, Sort.by("completedAt").descending());
-//        String userEmail = principal.getName();
-//
-//        return accomplishmentRepository.findByUserEmail(userEmail, paging);
-//    }
-//
-//
-//    @GetMapping(path = "/api/quizzes")
-//    public Page<Quiz> getAllQuestions(@RequestParam(defaultValue = "0") int page) {
-//        Pageable paging = PageRequest.of(page, 10);
-//
-//        return quizRepository.findAll(paging);
-//    }
-
-//    @DeleteMapping(path = "/api/quizzes/{id}")
-//    public ResponseEntity<String> deleteQuiz(@PathVariable Long id, Principal principal) {
-//        Quiz quiz = quizRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//        if (!quiz.getAuthor().equals(principal.getName())) {
-//            return new ResponseEntity<>("User is not the author of the quiz", HttpStatus.FORBIDDEN);
-//        }
-//        quizRepository.deleteById(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
     @GetMapping("/addquiz")
     public String quizAdd(

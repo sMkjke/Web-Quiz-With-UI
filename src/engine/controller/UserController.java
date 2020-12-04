@@ -43,7 +43,7 @@ public class UserController {
 
         userRepository.save(userForm);
         model.addAttribute("userForm", userForm);
-        return "simplemessage"; // have to return success page
+        return "simplemessage";
     }
 
     //Json register
