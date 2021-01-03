@@ -31,6 +31,9 @@
             </label>
         </div>
         <div>Answer: <strong th:text="${question.options.get(question.answerNumber - 1)}"></strong></div>
+
+<!--        here questionedit method-->
+
     </div>
 
     <p></p>
@@ -53,8 +56,9 @@
                     <table id="myTable" class="table order-list">
                         <tbody>
                         <tr>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio"  name="test" value="1" th:field="*{answerNumber}">
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="test" value="1"
+                                       th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[0]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </div>
@@ -62,8 +66,9 @@
                         </tbody>
                         <tbody>
                         <tr>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="test" value="2" th:field="*{answerNumber}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="test" value="2"
+                                       th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[1]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </div>
@@ -71,8 +76,9 @@
                         </tbody>
                         <tbody>
                         <tr>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio"  name="test" value="3" th:field="*{answerNumber}">
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="test" value="3"
+                                       th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[2]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </div>
@@ -80,13 +86,15 @@
                         </tbody>
                         <tbody>
                         <tr>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="test" value="4" th:field="*{answerNumber}">
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="test" value="4"
+                                       th:field="*{answerNumber}">
                                 <input type="text" th:field="*{options[3]}" class="form-control"
                                        placeholder="Add Option..."/>
                             </div>
                         </tr>
                         </tbody>
+
                         <tfoot>
                         <tr>
                         </tr>

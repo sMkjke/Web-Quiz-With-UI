@@ -140,6 +140,23 @@ public class QuizController {
         return "redirect:/quizdetails/" + quiz.getId();
     }
 
+    @PostMapping("/questionedit")
+    public String questionEdit(
+            @RequestParam Quiz quiz,
+            @ModelAttribute Question question,
+            Model model
+    ) {
+        question.setQuiz(quiz);
+
+        List<Question> questions = questionRepository.findByQuizId(quiz.getId());
+
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("questions", questions);
+
+        return "redirect:/quizdetails/" + quiz.getId();
+    }
+
+
     @GetMapping("/user-quizzes/{user}")
     public String userQuizzes(
             @PathVariable User user,
